@@ -49,7 +49,7 @@ export const Query = memo(function Query({
 	queryComponents,
 	isListViewPanel = false,
 }: QueryProps): JSX.Element {
-	const { panelType, currentQuery } = useQueryBuilder();
+	const { panelType, currentQuery, cloneQuery } = useQueryBuilder();
 	const { pathname } = useLocation();
 
 	const [isCollapse, setIsCollapsed] = useState(false);
@@ -295,6 +295,7 @@ export const Query = memo(function Query({
 				entityData={query}
 				onToggleVisibility={handleToggleDisableQuery}
 				onDelete={handleDeleteQuery}
+				onCloneQuery={cloneQuery}
 				onCollapseEntity={handleToggleCollapsQuery}
 				showDeleteButton={currentQuery.builder.queryData.length > 1}
 				isListViewPanel={isListViewPanel}

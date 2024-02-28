@@ -1,3 +1,5 @@
+import { Tooltip } from 'antd';
+
 import {
 	SelectOptionContainer,
 	TagContainer,
@@ -17,7 +19,11 @@ function OptionRenderer({
 		<span className="option">
 			{optionType ? (
 				<SelectOptionContainer>
-					<div className="option-value">{value}</div>
+					<div className="option-value">
+						<Tooltip title={value} placement="left">
+							{value}
+						</Tooltip>
+					</div>
 					<div className="option-meta-data-container">
 						<TagContainer>
 							<TagLabel>Type: </TagLabel>

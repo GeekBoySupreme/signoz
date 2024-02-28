@@ -1,14 +1,24 @@
 import './QBEntityOptions.styles.scss';
 
-import { Button, Col } from 'antd';
+import { Button, Col, Tooltip } from 'antd';
 import cx from 'classnames';
-import { ChevronDown, ChevronRight, Eye, EyeOff, Trash2 } from 'lucide-react';
+import { isFunction, noop } from 'lodash-es';
+import {
+	ChevronDown,
+	ChevronRight,
+	Copy,
+	Eye,
+	EyeOff,
+	Trash2,
+} from 'lucide-react';
+import { IBuilderQuery } from 'types/api/queryBuilder/queryBuilderData';
 
 interface QBEntityOptionsProps {
 	isCollapsed: boolean;
 	entityType: string;
 	entityData: any;
 	onDelete: () => void;
+	onCloneQuery?: (type: string, query: IBuilderQuery) => void;
 	onToggleVisibility: () => void;
 	onCollapseEntity: () => void;
 	showDeleteButton: boolean;
@@ -20,11 +30,18 @@ export default function QBEntityOptions({
 	entityType,
 	entityData,
 	onDelete,
+	onCloneQuery,
 	onToggleVisibility,
 	onCollapseEntity,
 	showDeleteButton,
 	isListViewPanel = false,
 }: QBEntityOptionsProps): JSX.Element {
+	const handleCloneEntity = (): void => {
+		if (isFunction(onCloneQuery)) {
+			onCloneQuery(entityType, entityData);
+		}
+	};
+
 	return (
 		<Col span={24}>
 			<div className="qb-entity-options">
@@ -46,6 +63,15 @@ export default function QBEntityOptions({
 							>
 								{entityData.disabled ? <EyeOff size={16} /> : <Eye size={16} />}
 							</Button>
+
+							{entityType === 'query' && (
+								<Tooltip title="Clone Query">
+									<Button className={cx('periscope-btn')} onClick={handleCloneEntity}>
+										<Copy size={14} />
+									</Button>
+								</Tooltip>
+							)}
+
 							<Button
 								className={cx(
 									'periscope-btn',
@@ -77,4 +103,5 @@ export default function QBEntityOptions({
 
 QBEntityOptions.defaultProps = {
 	isListViewPanel: false,
+	onCloneQuery: noop,
 };
